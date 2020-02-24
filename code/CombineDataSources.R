@@ -5,7 +5,7 @@ library(readxl)
 library(sf)
 library(rgdal)
 source("./code/functions.R")
-source("./code/FFP_R/calc_footprint_FFp_climatology_JB.R")
+source("./code/FFP_R/calc_footprint_FFP_climatology_JB.R")
 source("./code/tower_parameters.R")
 
 ################################################################################
@@ -52,7 +52,7 @@ combined.file <- left_join(full.dates, combined.file, "DateTime")
 
 rm(CovFmv.file, Guyaflux.clean, Guyaflux.full, full.dates, missing_times)
 
-write.csv(combined.file, "./data/combined_xlsx_Fmv_Cov.csv")
+#write.csv(combined.file, "./data/combined_xlsx_Fmv_Cov.csv")
 
 
 #################### Investigate ustar entry alignment #########################
@@ -76,11 +76,14 @@ write.csv(combined.file, "./data/combined_xlsx_Fmv_Cov.csv")
 
 lower.date <- make_datetime(2015, 1, 1, tz = "America/Cayenne")
 upper.limit <- make_datetime(2019, 1, 1, tz = "America/Cayenne")
-interval.period <- ddays(183)
+interval.period <- ddays(92)
 # Number of half hour slots available
 obs.num <- as.numeric(interval.period)/(60*30) 
 
 upper.date <- upper.limit - ddays(1)
+
+out.dir <- "./outputs/hpc_test/"
+dir.create(out.dir)
 
 while(upper.date < upper.limit){
   # upper.date <- make_datetime(2019, 12, 31, tz = "America/Cayenne")
@@ -163,8 +166,9 @@ while(upper.date < upper.limit){
   rm(poly.list)
   
   # Save outputs
+
   output.name <- paste0(tower.name,lower.date,"_", upper.date,"_FTPRNT.shp")
-  st_write(combined.poly, paste0("./outputs/NewParameters/", output.name))
+  st_write(combined.poly, paste0(out.dir, output.name))
   
   lower.date <- upper.date + ddays(1)
 }
