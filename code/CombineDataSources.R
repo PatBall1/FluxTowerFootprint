@@ -83,7 +83,7 @@ obs.num <- as.numeric(interval.period)/(60*30)
 upper.date <- upper.limit - ddays(1)
 
 out.dir <- "./outputs/hpc_test/"
-dir.create(out.dir)
+dir.create(out.dir, recursive = TRUE)
 
 while(upper.date < upper.limit){
   # upper.date <- make_datetime(2019, 12, 31, tz = "America/Cayenne")
